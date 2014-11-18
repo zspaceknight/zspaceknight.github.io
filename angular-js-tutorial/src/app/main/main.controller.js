@@ -2,6 +2,7 @@
 
 angular.module('angularjsTutorial')
   .controller('MainCtrl', function () {
+	this.message = "Main";
     this.awesomeThings = [
       {
         'key': 'angular',
@@ -67,7 +68,5 @@ angular.module('angularjsTutorial')
         'logo': 'node-sass.png'
       }
     ];
-    angular.forEach(this.awesomeThings, function(awesomeThing) {
-      awesomeThing.rank = Math.random();
-    });
+   
   });
