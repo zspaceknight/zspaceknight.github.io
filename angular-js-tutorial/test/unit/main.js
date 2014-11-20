@@ -1,46 +1,49 @@
 'use strict';
 
 describe('controllers', function(){
-  beforeEach(module('angularjsTutorial'));
-  
-  beforeEach(inject(function($rootScope){
-  }));
-  
-  it('should define more than 5 awesome things', inject(function($controller) {
-    var mainCtrl = $controller('MainCtrl', {});
+	beforeEach(module('angularjsTutorial'));
+
+	beforeEach(inject(function($rootScope){
+	}));
+
+	it('should have an array of todos',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{});
+		expect(angular.isArray(ctrl.todos)).toBeTruthy();
+	}));
+
+
+	it('should be able to add todo',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{});
+		
+		ctrl.addTodo({
+			'title' : 'test title'
+		});
+		
+		expect(ctrl.todos.length ===1).toBeTruthy();
+	}));
 	
-    expect(angular.isArray(mainCtrl.awesomeThings)).toBeTruthy();
-    expect(mainCtrl.awesomeThings.length > 5).toBeTruthy();
-  }));
-  
-  it('should have exactly 9 things',inject(function($controller){
-	var ctrl = $controller('MainCtrl',{});
-	expect(ctrl.awesomeThings.length === 9).toBeTruthy();
-  }));
-	  
-  it('should display items in expected position',inject(function($controller){
-	  var ctrl = $controller('MainCtrl',{});
-	  expect(ctrl.awesomeThings[0].key).toMatch('angular');
-	  /*
-	  'key': 'angular',
-	  'title': 'AngularJS',
-	  'url': 'https://angularjs.org/',
-	  'description': 'HTML enhanced for web apps!',
-	  'logo': 'angular.png'*/
-	  
-  }));
-  
-  it('should have all expected properties on each item',inject(function($controller){
-	  var ctrl = $controller('MainCtrl',{});
-	  var target = ctrl.awesomeThings[0];
-	  
-	  expect(target.key).toBeDefined();
-	  expect(target.title).toBeDefined();
-	  expect(target.url).toBeDefined();
-	  expect(target.logo).toBeDefined();
-	  expect(target.description).toBeDefined();	
-	  
-	  
-  })); 
-  
+	it('should be able to remove a todo',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{});
+		var title =  'test title';
+		ctrl.addTodo({
+			'title' : title
+		});
+		
+		expect(ctrl.todos.length ===1).toBeTruthy();
+		ctrl.removeTodo(title);
+		expect(ctrl.todos.length ===0).toBeTruthy();
+	}));
+	
+	it('it should create "title" and "completed" properties',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{});
+		var title =  'test title';
+		ctrl.addTodo({
+			'title' : title
+		});
+		
+		expect(ctrl.todos[0].title).toBeDefined();
+		expect(ctrl.todos[0].completed).toBeDefined();
+		expect(ctrl.todos[0].completed).toBe(false);
+	}));
+	
 });
