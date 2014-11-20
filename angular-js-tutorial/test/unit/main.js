@@ -1,19 +1,27 @@
 'use strict';
 
 describe('controllers', function(){
+	
+	var scope;
+	
 	beforeEach(module('angularjsTutorial'));
 
 	beforeEach(inject(function($rootScope){
+		scope= $rootScope.$new();
 	}));
 
 	it('should have an array of todos',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{});
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
 		expect(angular.isArray(ctrl.todos)).toBeTruthy();
 	}));
 
 
 	it('should be able to add todo',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{});
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
 		
 		ctrl.addTodo({
 			'title' : 'test title'
@@ -23,7 +31,10 @@ describe('controllers', function(){
 	}));
 	
 	it('should be able to remove a todo',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{});
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
+		
 		var title =  'test title';
 		ctrl.addTodo({
 			'title' : title
@@ -35,7 +46,10 @@ describe('controllers', function(){
 	}));
 	
 	it('it should create "title" and "completed" properties',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{});
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
+		
 		var title =  'test title';
 		ctrl.addTodo({
 			'title' : title
@@ -45,5 +59,20 @@ describe('controllers', function(){
 		expect(ctrl.todos[0].completed).toBeDefined();
 		expect(ctrl.todos[0].completed).toBe(false);
 	}));
+	
+	it('it should return correct css class for "completed"',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
+		
+		var title =  'test title';
+		ctrl.addTodo({
+			'title' : title,
+			'completed': true
+		});
+		
+		expect(ctrl.getTodoClasses(todo)).toMatch("completed");
+	}));
+	
 	
 });
