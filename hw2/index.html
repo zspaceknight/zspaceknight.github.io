@@ -2,8 +2,9 @@
 <html lang="en">
 	<head>
 	  <script src="angular.min.js"></script>
+	  <script src="http://code.jquery.com/jquery-latest.js"></script>
 	  <script src="main.js"></script>
-	  <script scr="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	  
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -13,13 +14,13 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul>
-					<li class="" ng-class="ng-repeat="ss in ctrl.timelineEvents">
-						{{ss.tile}}
-						{{ss.description}}
+					<li class="" ng-repeat="timelineEvent in ctrl.timelineEvents">
+						{{timelineEvent.title}} - {{timelineEvent.description}} ({{timelineEvent.date}})
 					</li>
 				</ul>
 			</div>
 		</div>
+		
 		
 		
 	</body>
