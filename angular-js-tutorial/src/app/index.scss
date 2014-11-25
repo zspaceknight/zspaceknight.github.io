@@ -25,3 +25,8 @@
 		}
 	}
 }
+
+.fade-height-animation {
+  &.ng-enter {     @include animation(wobble .5s);   }
+  &.ng-leave {     @include animation(zoomOut .5s);   } 
+}
