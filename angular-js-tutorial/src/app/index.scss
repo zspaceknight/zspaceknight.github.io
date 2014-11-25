@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -16,17 +18,24 @@
 .todos{
 	padding:1em 0;
 	.todo-item{
+		
 		list-style: none;
 		padding: .5em 0;
-	}
-	&.completed {
-		input {
-			text-decoration: line-through;
+	
+		&.completed {
+			input {
+				text-decoration: line-through;
+			}
+		}
+	
+		@include transition (1s ease opacity);
+	
+		&.ng-enter{
+			opacity: 0;
+			
+			&.ng-enter-exit{
+				opacity: 1;
+			}	
 		}
 	}
-}
-
-.fade-height-animation {
-  &.ng-enter {     @include animation(wobble .5s);   }
-  &.ng-leave {     @include animation(zoomOut .5s);   } 
 }
