@@ -9,11 +9,15 @@ angular.module('angularjsTutorial')
 	self.newTodoTitle = '';
 	
 	self.addTodo = function(todo){
-		self.todos.push({
+		
+		var newTodo = {
 			'title' : todo.title,
 			'completed' : (todo.completed) ? todo.completed : false
-		});
+		};
+		
+		self.todos.push(newTodo);
 		self.newTodoTitle = '';
+		return newTodo;
 	};
 	
 	self.removeTodo = function(title){
@@ -21,6 +25,12 @@ angular.module('angularjsTutorial')
 			return item.title !== title;
 		});
 	};
+	
+	self.removeTodoByReference = function(todo){
+		  self.todos = self.todos.filter(function(item){
+			  return item !== todo;
+		  });
+	  };
 	
 	self.getTodoClasses = function(todo){
 		 return{

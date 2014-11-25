@@ -30,12 +30,25 @@ describe('controllers', function(){
 		expect(ctrl.todos.length ===1).toBeTruthy();
 	}));
 	
+	it('should be able to add todo and return a reference to the newly created todo',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
+		
+		var newTodo = ctrl.addTodo({
+			'title' : 'test title'
+		});
+		
+		expect(newTodo).toBeDefined();
+	}));
+	
+	
 	it('should be able to remove a todo',inject(function($controller){
 		var ctrl = $controller('MainCtrl',{
 			$scope: scope
 		});
 		
-		var title =  'test title';
+		var title = 'test title';
 		ctrl.addTodo({
 			'title' : title
 		});
@@ -44,6 +57,21 @@ describe('controllers', function(){
 		ctrl.removeTodo(title);
 		expect(ctrl.todos.length ===0).toBeTruthy();
 	}));
+	
+	it('should be able to remove a todo by reference',inject(function($controller){
+		var ctrl = $controller('MainCtrl',{
+			$scope: scope
+		});
+		
+		var newTodo = ctrl.addTodo({
+			'title' : 'test  title'
+		});
+		
+		expect(ctrl.todos.length ===1).toBeTruthy();
+		ctrl.removeTodoByReference(newTodo);
+		expect(ctrl.todos.length ===0).toBeTruthy();
+	}));
+	
 	
 	it('it should create "title" and "completed" properties',inject(function($controller){
 		var ctrl = $controller('MainCtrl',{
@@ -59,20 +87,5 @@ describe('controllers', function(){
 		expect(ctrl.todos[0].completed).toBeDefined();
 		expect(ctrl.todos[0].completed).toBe(false);
 	}));
-	
-	it('it should return correct css class for "completed"',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{
-			$scope: scope
-		});
-		
-		var title =  'test title';
-		ctrl.addTodo({
-			'title' : title,
-			'completed': true
-		});
-		
-		expect(ctrl.getTodoClasses(todo)).toMatch("completed");
-	}));
-	
 	
 });

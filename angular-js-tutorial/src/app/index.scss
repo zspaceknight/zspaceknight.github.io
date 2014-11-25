@@ -15,6 +15,24 @@
   }
 }
 
+.btn-unstyled{
+	background: none;
+	border: none;
+}
+
+.slide-animation{
+	&.ng-enter{
+		@include animation(wobble.5s);
+	}
+	
+	&.ng-leave{
+		@include animation(zoomOut.5s);
+	}
+}
+
+
+$item-height: 4em;
+
 .todos{
 	padding:1em 0;
 	.todo-item{
@@ -28,14 +46,35 @@
 			}
 		}
 	
-		@include transition (1s ease opacity);
+		@include transition (0.3s ease all);
 	
 		&.ng-enter{
 			opacity: 0;
+			max-height:0;
+			padding:0;
 			
 			&.ng-enter-exit{
 				opacity: 1;
+				max-height: $item-height;
+				padding: .5em 0;
 			}	
+		}
+		
+		&.ng-leave{
+			opacity: 1;
+			max-height: $item-height;
+			padding:.5em 0;
+			
+			&.ng-leave-active{
+				opacity: 0;
+				max-height:0;
+				padding: 0;
+			}	
+		}
+		
+		
+		input{
+			@include transition(.3s ease all);
 		}
 	}
 }

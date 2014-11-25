@@ -25,6 +25,13 @@
 						<input type="text" class="form-control" ng-model="todo.title"
 							ng-readonly="todo.completed"
 						>
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-click="mainCtrl.removeTodoByReference(todo)">
+							<span class="glyphicon glyphicon-remove-circle"></span>
+							</button>
+							<span class="sr-only">Remove</span>
+						</span>
+						
 					</div>
 				</li>
 			</ul>
