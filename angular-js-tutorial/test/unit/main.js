@@ -14,7 +14,7 @@ describe('controllers', function(){
 		var ctrl = $controller('MainCtrl',{
 			$scope: scope
 		});
-		expect(angular.isArray(ctrl.todos)).toBeTruthy();
+		expect(angular.isArray(ctrl.getTodos())).toBeTruthy();
 	}));
 
 
@@ -27,7 +27,7 @@ describe('controllers', function(){
 			'title' : 'test title'
 		});
 		
-		expect(ctrl.todos.length ===1).toBeTruthy();
+		expect(ctrl.getTodos().length ===1).toBeTruthy();
 	}));
 	
 	it('should be able to add todo and return a reference to the newly created todo',inject(function($controller){

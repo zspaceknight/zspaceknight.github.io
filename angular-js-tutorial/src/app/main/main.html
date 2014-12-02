@@ -15,13 +15,13 @@
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="todos">
-				<li class="todo-item" ng-class="mainCtrl.getTodoClasses(todo)"  ng-repeat="todo in mainCtrl.getTodos()">
+				<li class="todo-item" ng-class="mainCtrl.getTodoClasses(todo)"  ng-repeat="todo in mainCtrl.todos track by todo.id">
 					<div class="input-group">
 						<span class="input-group-addon">
-							<input type="checkbox" ng-model="todo.completed"/>
+							<input type="checkbox" ng-model="todo.completed" ng-change="mainCtrl.saveTodos()"/>
 						</span>
 						<input type="text" class="form-control" ng-model="todo.title"
-							ng-readonly="todo.completed"
+							ng-readonly="todo.completed" ng-change="mainCtrl.saveTodos()"
 						>
 						<span class="input-group-btn">
 							<button class="btn btn-default" ng-click="mainCtrl.removeTodo(todo)">
