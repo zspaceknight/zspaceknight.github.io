@@ -1,6 +1,4 @@
 <div class="container">
-
-  <div ng-include="'components/navbar/navbar.html'"></div>
   
 	<h1>Todo</h2>
   
@@ -17,7 +15,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="todos">
-				<li class="todo-item" ng-class="mainCtrl.getTodoClasses(todo)"  ng-repeat="todo in mainCtrl.todos">
+				<li class="todo-item" ng-class="mainCtrl.getTodoClasses(todo)"  ng-repeat="todo in mainCtrl.getTodos()">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<input type="checkbox" ng-model="todo.completed"/>
@@ -26,7 +24,7 @@
 							ng-readonly="todo.completed"
 						>
 						<span class="input-group-btn">
-							<button class="btn btn-default" ng-click="mainCtrl.removeTodoByReference(todo)">
+							<button class="btn btn-default" ng-click="mainCtrl.removeTodo(todo)">
 							<span class="glyphicon glyphicon-remove-circle"></span>
 							</button>
 							<span class="sr-only">Remove</span>

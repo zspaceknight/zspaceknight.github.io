@@ -43,21 +43,6 @@ describe('controllers', function(){
 	}));
 	
 	
-	it('should be able to remove a todo',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{
-			$scope: scope
-		});
-		
-		var title = 'test title';
-		ctrl.addTodo({
-			'title' : title
-		});
-		
-		expect(ctrl.todos.length ===1).toBeTruthy();
-		ctrl.removeTodo(title);
-		expect(ctrl.todos.length ===0).toBeTruthy();
-	}));
-	
 	it('should be able to remove a todo by reference',inject(function($controller){
 		var ctrl = $controller('MainCtrl',{
 			$scope: scope
@@ -67,25 +52,9 @@ describe('controllers', function(){
 			'title' : 'test  title'
 		});
 		
-		expect(ctrl.todos.length ===1).toBeTruthy();
-		ctrl.removeTodoByReference(newTodo);
-		expect(ctrl.todos.length ===0).toBeTruthy();
-	}));
-	
-	
-	it('it should create "title" and "completed" properties',inject(function($controller){
-		var ctrl = $controller('MainCtrl',{
-			$scope: scope
-		});
-		
-		var title =  'test title';
-		ctrl.addTodo({
-			'title' : title
-		});
-		
-		expect(ctrl.todos[0].title).toBeDefined();
-		expect(ctrl.todos[0].completed).toBeDefined();
-		expect(ctrl.todos[0].completed).toBe(false);
+		expect(ctrl.getTodos().length ===1).toBeTruthy();
+		ctrl.removeTodo(newTodo);
+		expect(ctrl.getTodos().length ===0).toBeTruthy();
 	}));
 	
 });

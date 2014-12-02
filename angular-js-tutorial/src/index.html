@@ -29,6 +29,7 @@
     <![endif]-->
 
 	<div ng-controller="GlobalCtrl as globalCtrl">
+	   <div ng-include="'components/navbar/navbar.html'"></div>
 		<div ui-view></div>
 	</div>
 
@@ -57,8 +58,10 @@
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <script src="app/index.js"></script>
+	<script src="components/todo/todo.service.js"></script>
     <script src="app/main/main.controller.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
+	<script src="app/contact/contact.controller.js"></script>
 
     <!-- inject:partials -->
     <!-- angular templates will be automaticaly converted in js and inserted here -->
