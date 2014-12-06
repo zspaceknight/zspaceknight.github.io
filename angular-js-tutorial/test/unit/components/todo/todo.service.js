@@ -1,65 +1,94 @@
 'use strict';
 
 describe('TodoService', function(){
-  var TodoService;
-
+  var TodoService,
+	  $timeout;
+  
   beforeEach(module('angularjsTutorial'));
 
-  beforeEach(inject(function (_TodoService_) {
+  beforeEach(inject(function (_TodoService_, _$timeout_) {
     TodoService = _TodoService_;
+	$timeout = _$timeout_;
   }));
 
-  describe('#getTodos', function(){
-    it('should return an array', function(done) {
-      var todos = TodoService.getTodos();
-      expect(angular.isArray(todos)).toBeTruthy();
-    });
-  });
+	describe('#getTodos', function(){
+		it('should return an array', function(done) {
+			TodoService.getTodos()
+			.then(function(todos){
+				expect(angular.isArray(todos)).toBeTruthy();
+				console.log('in getTodos handler');
+			})
+			.finally(function(){
+				console.log('in the finally block');
+				done();
+			});
+			$timeout.flush();
+		});
+	});
 
 
-  describe('#addTodo', function(){
-    it('should be able to add a todo and return the newly created todo', function(done) {
-      var newTodo = TodoService.addTodo({
-        title : 'test title 1'
-      });
-
-      expect(TodoService.getTodos().length === 1).toBeTruthy();
-      expect(newTodo).toBeDefined();
-    });
-
-    it('should create "title" and "completed" properties on todos', inject(function($controller) {
-      TodoService.addTodo({
-        title : 'test title 2'
-      });
-
-      var todos = TodoService.getTodos();
-
-      expect(todos.length === 1).toBeTruthy();
-
-      expect(todos[0].title).toBeDefined();
-      expect(todos[0].completed).toBeDefined();
-      expect(todos[0].completed).toBe(false);
-    }));
-
-
-  });
+    describe('#addTodo', function(){
+		it('should be able to add a todo and return the newly created todo', function(done) {
+			TodoService.addTodo({
+				title : 'test title 1'
+			})
+			.then(function(newTodo){
+				console.log('then #1');
+				expect(newTodo).toBeDefined();
+				console.log('got to addTodo handler');
+			})
+			.then(function(){
+				console.log('then #2');
+				return TodoService.getTodos();
+			})
+			.then(function(todos){
+				console.log('then #3');
+				console.log('got to getTodos handler');
+				expect(todos.length === 1).toBeTruthy();
+			})
+			.finally(function(){
+				console.log('finally');
+				done();
+			});
+			$timeout.flush();
+			$timeout.flush();
+		});
+	});
 
   describe('#removeTodoById', function(){
-    it('should be able to remove a todo by reference', inject(function($controller) {
-
-      var title = 'test title 3';
-
-      var newTodo = TodoService.addTodo({
-        title : title
-      });
-
-      expect(TodoService.getTodos().length === 1).toBeTruthy();
-
-      TodoService.removeTodoById(newTodo.id);
-
-      // expect(true).toBeTruthy();
-      expect(TodoService.getTodos().length === 0).toBeTruthy();
-    }));
+    iit('should be able to remove a todo by reference', function(done) {
+	
+		var title = 'test title 3'
+		
+		TodoService.addTodo({
+			title : title
+		})
+		.then(function(){
+			console.log('then #1');
+			return TodoService.getTodos();
+		})
+		.then(function(todos){
+			console.log('then #2');
+			console.log('got to getTodos handler');
+			expect(todos.length === 1).toBeTruthy();
+		}).then(function(){
+			return TodoService.removeTodoById(todoToAdd.id)
+			console.log('then #3');
+		}).then(function(){
+			return TodoService.getTodos();
+		}).then(function(todos)
+		{
+			expect(todos.length === 0).toBeTruthy();
+		})
+		.finally(function(){
+			console.log('finally');
+			done();
+		});
+		$timeout.flush();
+		$timeout.flush();
+		$timeout.flush();
+		$timeout.flush();
+    });
   });
 
 });

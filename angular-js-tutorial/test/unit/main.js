@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 describe('controllers', function(){
   var scope;
 
@@ -70,3 +70,5 @@ describe('controllers', function(){
   // });
 
 });
+
+*/
