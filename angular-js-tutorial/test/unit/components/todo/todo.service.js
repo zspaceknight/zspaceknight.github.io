@@ -72,7 +72,7 @@ describe('TodoService', function(){
 			console.log('got to getTodos handler');
 			expect(todos.length === 1).toBeTruthy();
 		}).then(function(){
-			return TodoService.removeTodoById(todoToAdd.id)
+			//return TodoService.removeTodoById(todoToAdd.id)
 			console.log('then #3');
 		}).then(function(){
 			return TodoService.getTodos();
