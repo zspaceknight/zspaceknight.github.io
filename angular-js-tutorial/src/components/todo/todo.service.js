@@ -4,82 +4,105 @@ angular.module('angularjsTutorial')
 	.constant('firebaseUrl', 'https://zangulartutorial.firebaseio.com/');
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', 
-			function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
+  .factory('TodoService', ['$window', '$log', '$q', '$timeout','$http', 'firebaseUrl', 
+			function ($window, $log, $q, $timeout, $http, firebaseUrl) {
 
     $log.log('TodoService instantiated');
 
     var todos;
-
-	var firebaseReference = new Firebase(firebaseUrl + 'todos');
-	var firebaseSync = $firebase(firebaseReference);
-		
  
     return {
       getTodos : function(){
-				var deferred = $q.defer();
-			  firebaseSync.$asArray().$loaded().then(function(response){
-				  todos = response;
-				  $log.log('todos loaded', todos === response, response);
-				  
-				  deferred.resolve(todos);
-				  }).catch(function(err){
-				  $log.log('Error retrieving todos from firebase', err);
-			  });
+			
+			var deferred = $q.defer();  
+			$http.get(firebaseUrl + 'todos.json')
+			.success(function(data, status){
+				$log.log('TodoService.getTodos success', data);
+				
+				todos = Object.keys(data).map(function(key){
+					var todo = data[key];
+					todo.$id = key;
+					return todo;
+				});
+				
+				deferred.resolve(todos);
+			})
+			.error(function(data, status){
+				$log.log('TodoService.getTodos error', data);
+				deferred.reject(data);
+			});
+			  
 			  
 			  return deferred.promise;
 	},
   
 	addTodo : function(options){
-		
-		var deferred = $q.defer();
+			var deferred = $q.defer();
 			
-			todos.$add({
-					title : options.title,
-					completed : false
-				}).then(function(newTodoRef){
-					$log.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
-					$log.log('resolving addTodo promise');
-				deferred.resolve(newTodoRef);
-				}).catch(function(err){
-					console.log('error adding todo', err);
-					$log.log('rejecting addTodo promise');
-				deferred.reject(err);
+			var newTodo = angular.copy(options);
+			
+			$http.post(firebaseUrl + 'todos.json', newTodo)
+			.success(function(data, status){
+				$log.log('TodoService.addTodo success', data);
+				
+				newTodo.$id = data.name;
+				
+				todos.push(newTodo);
+				
+				deferred.resolve(newTodo);
+			})
+			.error(function(data, status){
+				$log.log('TodoService.addTodo error', data);
+				deferred.reject(data);
 			});
 			
-			return deferred.promise;
+			return deferred.promise;		
 	},
 
 	removeTodo : function(todo){
 			var deferred = $q.defer();
 			
-			todos.$remove(todo).then(function(todoRef){
-				$log.log('resolving removeTodo promise');
-				deferred.resolve(todoRef);
+			$http.delete(firebaseUrl + 'todos/' + todo.$id + '.json')
+			.success(function(data, status){
+				$log.log('TodoService.removeTodo success', data);
+				todos.splice(todos.indexOf(todo), 1);
+				deferred.resolve();
 			})
-			.catch(function(err){
-				$log.log('error removing todo', err);
-				$log.log('rejecting removeTodo promise');
-				deferred.reject(err);
+			.error(function(data, status){
+				$log.log('TodoService.removeTodo success', data);
+				deferred.reject(data);
 			});
 			
 			return deferred.promise;
 		},
 
 		saveTodo : function(todo){
+			
 			var deferred = $q.defer();
 			
-			todos.$save(todo).then(function(todoRef){
-				$log.log('resolving saveTodo promise');
-				deferred.resolve(todoRef);
+			// PUT to save/replace data at the specified path. It's an overwrite operation.
+			// https://www.firebase.com/docs/rest/guide/saving-data.html#section-put
+			
+			// For Firebase, invalid to send the $id property, so create a new, cleaned up object to send
+			var todoToPut = {
+				title : todo.title,
+				completed : todo.completed
+			};
+			
+			$http.put(firebaseUrl + '/' + todo.$id + '.json', todoToPut)
+			.success(function(data, status){
+				// success response is the data Firebase saved
+				$log.log('saveTodo success', data);
+				deferred.resolve(todo);
 			})
-			.catch(function(err){
-				$log.log('error saving todo', err);
-				$log.log('rejecting saveTodo promise');
-				deferred.reject(err);
+			.error(function(data, status){
+				$log.log('saveTodo error', data);
+				deferred.reject(data);
 			});
 			
 			return deferred.promise;
+			
+			
 		}
     };
   }]);
