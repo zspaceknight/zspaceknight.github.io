@@ -14,7 +14,14 @@
 	
 	<div class="row">
 		<div class="col-md-12">
-			<ajst-todo-list></ajst-todo-list>
+			<ajst-todo-list on-get-todos="mainCtrl.onGetTodos(todo)"
+							on-remove-todo="mainCtrl.onRemoveTodo(todo)"
+							on-save-todo="mainCtrl.onSaveTodo(todo)"
+			>
+				
+					<h2>First todo list</h2>
+			<div>Going to add a new to do with the title "{{mainCtrl.newTodoTitle}}"</div>
+			</ajst-todo-list>
 		</div>
 	</div>
   

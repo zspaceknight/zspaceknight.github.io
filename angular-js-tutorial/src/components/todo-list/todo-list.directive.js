@@ -3,7 +3,12 @@ angular.module('angularjsTutorial')
 	
 	return{
 		templateUrl: 'components/todo-list/todo-list.html',
-		scope: {},
+		transclude : true,
+		scope: {
+			onGetTodos: '&',
+			onRemoveTodo: '&',
+			onSaveTodo: '&'
+		},
 		controller : ['$scope', '$element', '$attrs', '$transclude', '$log', 'TodoFireService',
 					 function ($scope, $element, $attrs, $transclude, $log, TodoFireService){
 						 
@@ -11,12 +16,24 @@ angular.module('angularjsTutorial')
 							 return $scope.todos = TodoFireService.getTodos()
 									.then(function(todos){
 											$scope.todos = todos;
+											$log.log('ajstTodoList calling $scope.onGetTodos()');
+											$scope.onGetTodos(
+												{
+													todos: todos
+												});
 											return $scope.todos;
 									});
 						 };
 						 
 						 $scope.removeTodo = function(todo){
-							return TodoFireService.removeTodo(todo); 
+							$scope.onRemoveTodo;
+							return TodoFireService.removeTodo(todo)
+								   .then(function(todos){
+									   $log.log('ajstTodoList calling $scope.onRemoveTodos()');
+									   $scope.onRemoveTodo({
+										todo:todo
+										});
+									}); 
 						 };
 						 
 						 $scope.getTodoClasses = function(todo){
@@ -26,7 +43,12 @@ angular.module('angularjsTutorial')
 						 };
 						 
 						 $scope.saveTodo = function(todo){
-							 return TodoFireService.saveTodo(todo);
+							 onSaveTodo;
+							 return TodoFireService.saveTodo(todo)
+									.then(function(){
+										$log.log('ajstTodoList calling $scope.onSaveTodos()');										
+										$scope.onSaveTodo({todo:todo});
+									});
 						 }
 						
 						$scope.getTodos();

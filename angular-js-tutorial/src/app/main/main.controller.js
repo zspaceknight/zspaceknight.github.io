@@ -52,4 +52,18 @@ angular.module('angularjsTutorial')
     }
 
     self.getTodos();
+	
+	self.onGetTodos = function(todos){
+		$log.log("MainCtrl.onGetTodos called ", todos);
+	}
+	
+	  self.onRemoveTodo = function(todo){
+		  $log.log("MainCtrl.onRemoveTodos called ", todo);
+	  };
+	  
+	  self.onSaveTodo = function(todo){
+		  $log.log("MainCtrl.onSaveTodos called ", todo);
+	  };
+	
+	
   }]);
