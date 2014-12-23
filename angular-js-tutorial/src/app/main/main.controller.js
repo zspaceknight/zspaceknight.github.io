@@ -1,69 +1,40 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .controller('MainCtrl', ['$scope', '$log', '$q', 'Todo', function ($scope, $log, $q, Todo) {
+.controller('MainCtrl', ['$scope', '$log', '$q', 'TodoFireService',
+  function ($scope, $log, $q, TodoFireService) {
     $log.log('MainCtrl instantiated');
+
     var self = this;
 
     self.newTodoTitle = '';
 
-
-    self.getTodos = function(){
-       return self.todos = Todo.query();
-    };
-
     self.addTodo = function(options){
-      var newTodoOptions = {
-        title : options.title,
-        completed : false
-      };
-      Todo.add(newTodoOptions, function(newTodo){
-        $log.log('MainCtrl $add newTodo response', newTodo);
+      var newTodo;
 
-        // Move the key to the $id property, like our view expects
-        newTodo.$id = newTodo.name;
-        newTodo.name = undefined;
-
-        // Firebase only returns the key of the newly created object, not the entire object
-        // So we need to add our properties back on to it
-        angular.extend(newTodo, newTodoOptions);
-        $log.log('MainCtrl $add newTodo after hydration', newTodo);
-
-        self.todos.push(newTodo);
+	  console.log("main ctrl options", options);
+      return TodoFireService.addTodo(options)
+      .then(function(newTodoResult){
+        newTodo = newTodoResult;
         self.newTodoTitle = '';
+      },
+      function(err){
+        $log.log(err);
       });
     };
 
-
-    self.removeTodo = function(todo){
-      return todo.$remove(function(){
-        self.todos.splice(self.todos.indexOf(todo), 1);
-      });
+    self.onGetTodos = function(syncedTodos){
+      self.todos = syncedTodos;
+      $log.log('MainCtrl.onGetTodos called', syncedTodos);
     };
 
-    self.getTodoClasses = function(todo){
-      return {
-        'completed' : todo.completed
-      };
+    self.onRemoveTodo = function(todo){
+      $log.log('MainCtrl.onRemoveTodo called', todo);
     };
 
-    self.saveTodo = function(todo){
-      return todo.$update();
+    self.onSaveTodo = function(todo){
+      $log.log('MainCtrl.onSaveTodo called', todo);
     };
 
-    self.getTodos();
-	
-	self.onGetTodos = function(todos){
-		$log.log("MainCtrl.onGetTodos called ", todos);
-	};
-	
-	  self.onRemoveTodo = function(todo){
-		  $log.log("MainCtrl.onRemoveTodos called ", todo);
-	  };
-	  
-	  self.onSaveTodo = function(todo){
-		  $log.log("MainCtrl.onSaveTodos called ", todo);
-	  };
-	
-	
-  }]);
+  }
+]);

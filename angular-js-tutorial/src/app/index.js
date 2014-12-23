@@ -31,7 +31,7 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
   })
   .run(['$rootScope', '$log', '$state',
 		function($rootScope, $log, $state) {
-		// routes may reject resolve promises with our custom {authRequired: true} error
+		
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		$log.log('$stateChangeError', event, toState, toParams, fromState, fromParams, error);
 
