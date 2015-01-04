@@ -44,18 +44,18 @@ angular.module('angularjsTutorial')
     self.getTodoClasses = function(todo){
       return {
         'completed' : todo.completed
-      }
+      };
     };
 
     self.saveTodo = function(todo){
       return todo.$update();
-    }
+    };
 
     self.getTodos();
 	
 	self.onGetTodos = function(todos){
 		$log.log("MainCtrl.onGetTodos called ", todos);
-	}
+	};
 	
 	  self.onRemoveTodo = function(todo){
 		  $log.log("MainCtrl.onRemoveTodos called ", todo);

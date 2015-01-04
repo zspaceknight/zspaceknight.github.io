@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-    .controller('ContactCtrl', function ($scope) {
+    .controller('ContactCtrl', function () {
 	console.log('ContactCtrl instantiated');
-	var self = this;
 });
